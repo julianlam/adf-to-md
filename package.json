@@ -1,0 +1,17 @@
+{
+  "name": "adf-to-md",
+  "version": "0.0.0",
+  "description": "Converter to turn Atlassian Document Format (ADF) objects into Markdown",
+  "main": "index.js",
+  "repository": "https://github.com/julianlam/adf-to-md",
+  "author": "Julian Lam <julian@nodebb.org>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "eslint-config-nodebb": "0.1.1"
+  },
+  "devDependencies": {
+    "eslint": "8.x",
+    "eslint-plugin-import": "2.x"
+  }
+}
