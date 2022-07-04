@@ -13,6 +13,9 @@ function _convert(node, warnings) {
 		case 'paragraph':
 			return node.content.map(node => _convert(node, warnings)).join('');
 
+		case 'heading':
+			return `${'#'.repeat(node.attrs.level)} ${node.content.map(node => _convert(node, warnings)).join('')}`;
+
 		case 'hardBreak':
 			return '\n';
 
@@ -98,7 +101,10 @@ Converter.convert = (adf) => {
 
 	// todo: do stuff with warnings
 
-	return _convert(adf, warnings);
+	return {
+		result: _convert(adf, warnings),
+		warnings,
+	};
 };
 
 Converter.validate = (adf) => {
