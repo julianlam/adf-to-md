@@ -19,6 +19,9 @@ function _convert(node, warnings) {
 		case 'hardBreak':
 			return '\n';
 
+		case 'inlineCard':
+			return `[${node.attrs.url}](${node.attrs.url})`;
+
 		case 'blockquote':
 			return `> ${node.content.map(node => _convert(node, warnings)).join('\n> ')}`;
 
