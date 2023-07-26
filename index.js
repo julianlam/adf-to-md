@@ -20,6 +20,8 @@ function _convert(node, warnings) {
 			return '\n';
 
 		case 'inlineCard':
+		case 'blockCard':
+		case 'embedCard':
 			return `[${node.attrs.url}](${node.attrs.url})`;
 
 		case 'blockquote':
