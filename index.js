@@ -56,6 +56,32 @@ function _convert(node, warnings) {
 			return `\`\`\`${language}\n${node.content.map(node => _convert(node, warnings)).join('\n')}\n\`\`\``;
 		}
 
+		case 'rule':
+			return '\n\n---\n';
+
+		case 'emoji':
+			return node.attrs.shortName;
+
+		case 'table':
+			return node.content.map(node => _convert(node)).join('');
+
+		case 'tableRow': {
+			let output = '|';
+			let thCount = 0;
+			output += node.content.map((subNode) => {
+				thCount += subNode.type === 'tableHeader' ? 1 : 0;
+				return _convert(subNode);
+			}).join('');
+			output += thCount ? `\n${'|:-:'.repeat(thCount)}|\n` : '\n';
+			return output;
+		}
+
+		case 'tableHeader':
+			return `${node.content.map(node => _convert(node)).join('')}|`;
+
+		case 'tableCell':
+			return `${node.content.map(node => _convert(node)).join('')}|`;
+
 		default:
 			console.log('adding warning for', node.type);
 			warnings.add(node.type);
