@@ -63,7 +63,7 @@ function _convert(node, warnings) {
 			return node.attrs.shortName;
 
 		case 'table':
-			return node.content.map(node => _convert(node)).join('');
+			return node.content.map(node => _convert(node, warnings)).join('');
 
 		case 'tableRow': {
 			let output = '|';
@@ -77,10 +77,10 @@ function _convert(node, warnings) {
 		}
 
 		case 'tableHeader':
-			return `${node.content.map(node => _convert(node)).join('')}|`;
+			return `${node.content.map(node => _convert(node, warnings)).join('')}|`;
 
 		case 'tableCell':
-			return `${node.content.map(node => _convert(node)).join('')}|`;
+			return `${node.content.map(node => _convert(node, warnings)).join('')}|`;
 
 		default:
 			console.log('adding warning for', node.type);
