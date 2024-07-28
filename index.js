@@ -109,7 +109,7 @@ function _convertMarks(node, warnings) {
 				break;
 
 			case 'strike':
-				converted = `~${converted}~`;
+				converted = `~~${converted}~~`;
 				break;
 
 			case 'strong':
