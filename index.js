@@ -70,7 +70,7 @@ function _convert(node, warnings) {
 			let thCount = 0;
 			output += node.content.map((subNode) => {
 				thCount += subNode.type === 'tableHeader' ? 1 : 0;
-				return _convert(subNode);
+				return _convert(subNode, warnings);
 			}).join('');
 			output += thCount ? `\n${'|:-:'.repeat(thCount)}|\n` : '\n';
 			return output;
