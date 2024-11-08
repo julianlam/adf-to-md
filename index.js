@@ -3,18 +3,20 @@
 const Converter = module.exports;
 
 function _convert(node, warnings) {
+	const content = node.content || [];
+	
 	switch (node.type) {
 		case 'doc':
-			return node.content.map(node => _convert(node, warnings)).join('\n\n');
+			return content.map(node => _convert(node, warnings)).join('\n\n');
 
 		case 'text':
 			return `${_convertMarks(node, warnings)}`;
 
 		case 'paragraph':
-			return node.content.map(node => _convert(node, warnings)).join('');
+			return content.map(node => _convert(node, warnings)).join('');
 
 		case 'heading':
-			return `${'#'.repeat(node.attrs.level)} ${node.content.map(node => _convert(node, warnings)).join('')}`;
+			return `${'#'.repeat(node.attrs.level)} ${content.map(node => _convert(node, warnings)).join('')}`;
 
 		case 'hardBreak':
 			return '\n';
@@ -25,11 +27,11 @@ function _convert(node, warnings) {
 			return `[${node.attrs.url}](${node.attrs.url})`;
 
 		case 'blockquote':
-			return `> ${node.content.map(node => _convert(node, warnings)).join('\n> ')}`;
+			return `> ${content.map(node => _convert(node, warnings)).join('\n> ')}`;
 
 		case 'bulletList':
 		case 'orderedList':
-			return `${node.content.map((subNode) => {
+			return `${content.map((subNode) => {
 				const converted = _convert.call(node, subNode, warnings);
 
 				if (node.type === 'orderedList') {
@@ -48,12 +50,12 @@ function _convert(node, warnings) {
 		case 'listItem': {
 			const order = this.attrs ? this.attrs.order || 1 : 1;
 			const symbol = this.type === 'bulletList' ? '*' : `${order}.`;
-			return `  ${symbol} ${node.content.map(node => _convert(node, warnings).trimEnd()).join(` `)}`;
+			return `  ${symbol} ${content.map(node => _convert(node, warnings).trimEnd()).join(` `)}`;
 		}
 
 		case 'codeBlock': {
 			const language = node.attrs ? ` ${node.attrs.language}` : '';
-			return `\`\`\`${language}\n${node.content.map(node => _convert(node, warnings)).join('\n')}\n\`\`\``;
+			return `\`\`\`${language}\n${content.map(node => _convert(node, warnings)).join('\n')}\n\`\`\``;
 		}
 
 		case 'rule':
@@ -63,12 +65,12 @@ function _convert(node, warnings) {
 			return node.attrs.shortName;
 
 		case 'table':
-			return node.content.map(node => _convert(node, warnings)).join('');
+			return content.map(node => _convert(node, warnings)).join('');
 
 		case 'tableRow': {
 			let output = '|';
 			let thCount = 0;
-			output += node.content.map((subNode) => {
+			output += content.map((subNode) => {
 				thCount += subNode.type === 'tableHeader' ? 1 : 0;
 				return _convert(subNode, warnings);
 			}).join('');
@@ -77,10 +79,10 @@ function _convert(node, warnings) {
 		}
 
 		case 'tableHeader':
-			return `${node.content.map(node => _convert(node, warnings)).join('')}|`;
+			return `${content.map(node => _convert(node, warnings)).join('')}|`;
 
 		case 'tableCell':
-			return `${node.content.map(node => _convert(node, warnings)).join('')}|`;
+			return `${content.map(node => _convert(node, warnings)).join('')}|`;
 
 		default:
 			console.log('adding warning for', node.type);
